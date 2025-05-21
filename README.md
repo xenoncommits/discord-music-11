@@ -74,9 +74,9 @@
 <details>
 <summary>Click to view screenshots</summary>
 
-![Help Command](https://i.imgur.com/example1.png)
-![Now Playing](https://i.imgur.com/example2.png)
-![Queue](https://i.imgur.com/example3.png)
+![Help Command](https://ibb.co/ym0BQfdC)
+![Play](https://ibb.co/XfZYbN99)
+![Queue](https://ibb.co/BVqGDd3P)
 
 </details>
 
