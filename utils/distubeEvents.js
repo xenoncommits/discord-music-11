@@ -68,7 +68,7 @@ exports.handleDistubeEvents = (client) => {
       const embed = new EmbedBuilder()
         .setColor('#FF0000')
         .setTitle(`${emojis.error} Error`)
-        .setDescription(`An error occurred: ${error.message.slice(0, 1997)}...`);
+        .setDescription(`An error occurred: ${error?.message || 'Unknown error occurred'}`);
       
       channel.send({ embeds: [embed] });
     }
@@ -103,4 +103,4 @@ exports.handleDistubeEvents = (client) => {
     
     queue.textChannel.send({ embeds: [embed] });
   });
-}; 
+};
