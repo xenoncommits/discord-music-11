@@ -87,14 +87,18 @@ module.exports = {
           .setDisabled(currentPage === Object.keys(commandCategories).length - 1)
       );
 
-    const message = await interaction.reply({
+    await interaction.reply({
       embeds: [embed],
       components: [row],
       fetchReply: true
     });
 
     const filter = i => i.user.id === interaction.user.id;
-    const collector = message.createMessageComponentCollector({ filter, time: 60000 });
+    const collector = interaction.channel.createMessageComponentCollector({ 
+      filter, 
+      time: 60000,
+      message: await interaction.fetchReply()
+    });
 
     collector.on('collect', async i => {
       if (i.customId === 'prev') {
@@ -104,16 +108,26 @@ module.exports = {
       }
 
       const newEmbed = createHelpEmbed(interaction, currentPage);
-      await i.update({ embeds: [newEmbed], components: [row] });
+      await i.update({ 
+        embeds: [newEmbed], 
+        components: [row] 
+      });
 
       // Update button states
       row.components[0].setDisabled(currentPage === 0);
       row.components[1].setDisabled(currentPage === Object.keys(commandCategories).length - 1);
     });
 
-    collector.on('end', () => {
-      row.components.forEach(button => button.setDisabled(true));
-      message.edit({ components: [row] });
+    collector.on('end', async () => {
+      const message = await interaction.fetchReply();
+      if (message) {
+        const disabledRow = new ActionRowBuilder()
+          .addComponents(
+            ButtonBuilder.from(row.components[0]).setDisabled(true),
+            ButtonBuilder.from(row.components[1]).setDisabled(true)
+          );
+        await interaction.editReply({ components: [disabledRow] });
+      }
     });
   },
 };
