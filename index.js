@@ -14,35 +14,26 @@ const { SoundCloudPlugin } = require('@distube/soundcloud');
 const { YtDlpPlugin } = require('@distube/yt-dlp');
 const { emojis } = require('./config/emojis');
 const express = require('express');
+
+// Start web server for Render.com
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-// Basic route so Render detects a port
-app.get('/', (req, res) => {
-  res.send('Bot is running smoothly ✅');
-});
-
-// Start the HTTP server
+app.get('/', (req, res) => res.send('Bot is running smoothly ✅'));
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Listening on port ${PORT}`);
 });
 
-// Your Discord bot code below:
-const Discord = require('discord.js');
-const Bot = new Discord.Client();
-// (Your music plugin and bot.login logic)
-
-// Create a new client instance
+// Create Discord client with required intents
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildVoiceStates,
     GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildVoiceStates,
     GatewayIntentBits.MessageContent
   ]
 });
 
-// Create collections for commands
+// Initialize command collection
 client.commands = new Collection();
 
 // Initialize DisTube
@@ -55,7 +46,7 @@ client.distube = new DisTube(client, {
   ]
 });
 
-// Load commands
+// Load slash commands
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 const commands = [];
@@ -76,16 +67,11 @@ for (const file of commandFiles) {
 const deployCommands = async () => {
   try {
     console.log(`Started refreshing ${commands.length} application (/) commands.`);
-    
-    // Construct and prepare an instance of the REST module
     const rest = new REST().setToken(process.env.TOKEN);
-    
-    // The put method is used to fully refresh all commands globally
     const data = await rest.put(
       Routes.applicationCommands(process.env.CLIENT_ID),
-      { body: commands },
+      { body: commands }
     );
-    
     console.log(`Successfully reloaded ${data.length} application (/) commands.`);
   } catch (error) {
     console.error('Error deploying commands:', error);
@@ -107,12 +93,12 @@ for (const file of eventFiles) {
   }
 }
 
-// DisTube events
+// Load DisTube events
 const { handleDistubeEvents } = require('./utils/distubeEvents');
 handleDistubeEvents(client);
 
-// Deploy commands and then log in to Discord
+// Start bot
 (async () => {
   await deployCommands();
   client.login(process.env.TOKEN);
-})(); 
+})();
