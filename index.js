@@ -1,6 +1,6 @@
 /**
  * Discord DisTube Music Bot
- * Made by Friday and Powered By Cortex Realm
+ * Made 
  * Support Server: https://discord.gg/EWr3GgP6fe
  */
 
