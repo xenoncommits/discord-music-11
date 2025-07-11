@@ -10,16 +10,16 @@
   "keywords": ["discord", "bot", "music", "distube", "discord.js"],
   "author": "",
   "license": "MIT",
-  "dependencies": {
-    "@discordjs/builders": "^1.11.2",
-    "@discordjs/opus": "^0.10.0",
-    "@discordjs/rest": "^2.5.0",
-    "@discordjs/voice": "^0.18.0",
-    "@distube/soundcloud": "^2.0.4",
-    "@distube/spotify": "^2.0.2",
-    "@distube/yt-dlp": "^2.0.1",
-    "discord.js": "^14.19.3",
-    "distube": "^5.0.7",
-    "dotenv": "^16.5.0"
-  }
+"dependencies": {
+  "@discordjs/builders": "^1.11.2",
+  "@discordjs/opus": "^0.10.0",
+  "@discordjs/rest": "^2.5.0",
+  "@discordjs/voice": "^0.18.0",
+  "@distube/soundcloud": "^2.0.4",
+  "@distube/spotify": "^2.0.2",
+  "@distube/yt-dlp": "^2.0.1",
+  "discord.js": "^14.19.3",
+  "distube": "^5.0.7",
+  "dotenv": "^16.5.0",
+  **"express": "^4.18.2"**
 }
