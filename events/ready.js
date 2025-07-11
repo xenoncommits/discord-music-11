@@ -13,7 +13,7 @@ module.exports = {
     console.log(`Ready! Logged in as ${client.user.tag}`);
     
     // Set bot activity
-    client.user.setActivity('music commands', { type: ActivityType.Listening });
+    client.user.setActivity('Xenon 24/7*', { type: ActivityType.Listening });
     
     console.log(`Bot is in ${client.guilds.cache.size} guilds`);
   },
