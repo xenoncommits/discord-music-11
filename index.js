@@ -13,6 +13,24 @@ const { SpotifyPlugin } = require('@distube/spotify');
 const { SoundCloudPlugin } = require('@distube/soundcloud');
 const { YtDlpPlugin } = require('@distube/yt-dlp');
 const { emojis } = require('./config/emojis');
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Basic route so Render detects a port
+app.get('/', (req, res) => {
+  res.send('Bot is running smoothly ✅');
+});
+
+// Start the HTTP server
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Listening on port ${PORT}`);
+});
+
+// Your Discord bot code below:
+const Discord = require('discord.js');
+const Bot = new Discord.Client();
+// (Your music plugin and bot.login logic)
 
 // Create a new client instance
 const client = new Client({
