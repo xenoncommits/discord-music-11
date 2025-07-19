@@ -5,6 +5,7 @@
  */
 
 require('dotenv').config();
+process.env.FFMPEG_PATH = require('child_process').execSync('which ffmpeg').toString().trim();
 const { Client, GatewayIntentBits, Collection, REST, Routes } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
