@@ -15,7 +15,7 @@ exports.emojis = {
   shuffle: '<:shuffle:1374615836102496268>',
   
   // Status emojis
-  success: '<:correct:1374615832285544538>',
+  success: '<:white_check_mark:>',
   error: '<:wrong:1374615828875706482>',
   warning: '<:warning:1374615824698183780>',
   info: '<:info:1374615821573296128>',
