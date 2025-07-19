@@ -8,12 +8,23 @@ const { EmbedBuilder } = require('discord.js');
 const { emojis } = require('../config/emojis');
 
 /**
+ * Safe channel send wrapper
+ * @param {TextChannel | any} channel - The channel to send to
+ * @param {Object} payload - The message payload
+ */
+function safeSend(channel, payload) {
+  if (channel && typeof channel.send === 'function') {
+    channel.send(payload);
+  }
+}
+
+/**
  * Handles all DisTube events
  * @param {Client} client - Discord client
  */
 exports.handleDistubeEvents = (client) => {
   const distube = client.distube;
-  
+
   // When a song starts playing
   distube.on('playSong', (queue, song) => {
     const embed = new EmbedBuilder()
@@ -26,8 +37,8 @@ exports.handleDistubeEvents = (client) => {
       )
       .setThumbnail(song.thumbnail)
       .setFooter({ text: `Volume: ${queue.volume}% | Filter: ${queue.filters.names.join(', ') || 'Off'}` });
-    
-    queue.textChannel.send({ embeds: [embed] });
+
+    safeSend(queue.textChannel, { embeds: [embed] });
   });
 
   // When a song is added to the queue
@@ -42,8 +53,8 @@ exports.handleDistubeEvents = (client) => {
         { name: 'Position in queue', value: `${queue.songs.length - 1}`, inline: true }
       )
       .setThumbnail(song.thumbnail);
-    
-    queue.textChannel.send({ embeds: [embed] });
+
+    safeSend(queue.textChannel, { embeds: [embed] });
   });
 
   // When a playlist is added to the queue
@@ -57,21 +68,19 @@ exports.handleDistubeEvents = (client) => {
         { name: 'Requested by', value: `${playlist.user}`, inline: true }
       )
       .setThumbnail(playlist.thumbnail);
-    
-    queue.textChannel.send({ embeds: [embed] });
+
+    safeSend(queue.textChannel, { embeds: [embed] });
   });
 
   // When an error occurs
   distube.on('error', (channel, error) => {
     console.error(error);
-    if (channel) {
-      const embed = new EmbedBuilder()
-        .setColor('#FF0000')
-        .setTitle(`${emojis.error} Error`)
-        .setDescription(`An error occurred: ${error?.message || 'Unknown error occurred'}`);
-      
-      channel.send({ embeds: [embed] });
-    }
+    const embed = new EmbedBuilder()
+      .setColor('#FF0000')
+      .setTitle(`${emojis.error} Error`)
+      .setDescription(`An error occurred: ${error?.message || 'Unknown error occurred'}`);
+
+    safeSend(channel, { embeds: [embed] });
   });
 
   // When the queue ends
@@ -80,8 +89,8 @@ exports.handleDistubeEvents = (client) => {
       .setColor('#FFFF00')
       .setTitle(`${emojis.info} Queue Finished`)
       .setDescription('No more songs in the queue.');
-    
-    queue.textChannel.send({ embeds: [embed] });
+
+    safeSend(queue.textChannel, { embeds: [embed] });
   });
 
   // When the bot disconnects from a voice channel
@@ -90,8 +99,8 @@ exports.handleDistubeEvents = (client) => {
       .setColor('#FF9900')
       .setTitle(`${emojis.info} Disconnected`)
       .setDescription('I have been disconnected from the voice channel.');
-    
-    queue.textChannel.send({ embeds: [embed] });
+
+    safeSend(queue.textChannel, { embeds: [embed] });
   });
 
   // When the queue is empty
@@ -100,7 +109,7 @@ exports.handleDistubeEvents = (client) => {
       .setColor('#FF9900')
       .setTitle(`${emojis.warning} Channel Empty`)
       .setDescription('Voice channel is empty! Leaving the channel...');
-    
-    queue.textChannel.send({ embeds: [embed] });
+
+    safeSend(queue.textChannel, { embeds: [embed] });
   });
 };
